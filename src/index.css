@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.section-layout{
+  @apply w-full h-[260px] px-5 sm:px-10 lg:px-20 py-12 lg:py-16 flex items-center;
+}
+
+.section-container{
+  @apply max-w-6xl mx-auto w-full;
+}
