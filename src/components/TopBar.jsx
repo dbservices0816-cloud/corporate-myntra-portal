@@ -4,29 +4,19 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/f
 export default function TopBar() {
   const { t, i18n } = useTranslation();
 
-  const socialLinks = [
-    { icon: <FaFacebookF />, href: "#" },
-    { icon: <FaInstagram />, href: "#" },
-    { icon: <FaTwitter />, href: "#" },
-    { icon: <FaLinkedinIn />, href: "#" },
-  ];
+  // const socialLinks = [
+  //   { icon: <FaFacebookF />, href: "#" },
+  //   { icon: <FaInstagram />, href: "#" },
+  //   { icon: <FaTwitter />, href: "#" },
+  //   { icon: <FaLinkedinIn />, href: "#" },
+  // ];
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-[#5DD3B6] text-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
 
         {/* Left — Social Icons (Desktop only) */}
-        <div className="hidden md:flex items-center gap-1">
-          {socialLinks.map((s, i) => (
-            <a
-              key={i}
-              href={s.href}
-              className="p-2 rounded-full text-white hover:bg-white/20 transition"
-            >
-              {s.icon}
-            </a>
-          ))}
-        </div>
+       
 
         {/* Center — Phone Text */}
         {/* Mobile */}

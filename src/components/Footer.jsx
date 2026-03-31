@@ -25,26 +25,10 @@ export default function Footer() {
             {t("footer.quickLinks")}
           </h3>
           <ul className="space-y-2 text-sm">
-            <li>
-              <Link to="/" className="hover:text-green-900">
-                {t("footer.home")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/about" className="hover:text-green-900">
-                {t("footer.about")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/new-company-registration" className="hover:text-green-900">
-                {t("footer.services")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/query-form" className="hover:text-green-900">
-                {t("footer.contact")}
-              </Link>
-            </li>
+            <li><Link to="/" className="hover:text-green-900">{t("footer.home")}</Link></li>
+            <li><Link to="/about" className="hover:text-green-900">{t("footer.about")}</Link></li>
+            <li><Link to="/new-company-registration" className="hover:text-green-900">{t("footer.services")}</Link></li>
+            <li><Link to="/query-form" className="hover:text-green-900">{t("footer.contact")}</Link></li>
           </ul>
         </div>
 
@@ -54,54 +38,28 @@ export default function Footer() {
             {t("footer.ourServices")}
           </h3>
           <ul className="space-y-2 text-sm">
-            <li>
-              <Link to="/company-registration" className="hover:text-green-900">
-                {t("footer.s1")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/gst-assistance" className="hover:text-green-900">
-                {t("footer.s2")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/msme-registrations" className="hover:text-green-900">
-                {t("footer.s3")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/accounting-cost-management" className="hover:text-green-900">
-                {t("footer.s4")}
-              </Link>
-            </li>
-            <li>
-              <Link to="/pan-application" className="hover:text-green-900">
-                {t("footer.s5")}
-              </Link>
-            </li>
+            <li><Link to="/company-registration" className="hover:text-green-900">{t("footer.s1")}</Link></li>
+            <li><Link to="/gst-assistance" className="hover:text-green-900">{t("footer.s2")}</Link></li>
+            <li><Link to="/msme-registrations" className="hover:text-green-900">{t("footer.s3")}</Link></li>
+            <li><Link to="/accounting-cost-management" className="hover:text-green-900">{t("footer.s4")}</Link></li>
+            <li><Link to="/pan-application" className="hover:text-green-900">{t("footer.s5")}</Link></li>
           </ul>
         </div>
 
-        {/* Social Media */}
+        {/* Contact / Address Section */}
         <div>
           <h3 className="text-lg font-semibold text-green-600 mb-4">
-            {t("footer.followUs")}
+            Contact Us
           </h3>
+          <p className="text-sm leading-relaxed">
+            UKG-11, 5th Floor <br />
+            Bhikaji Cama Place <br />
+            New Delhi - 110066 <br />
+            India
+          </p>
 
-          <div className="flex space-x-4">
-            <a href="#" className="border border-green-600 text-green-600 p-3 rounded-full hover:bg-green-600 hover:text-white transition">
-              <FaFacebookF />
-            </a>
-            <a href="#" className="border border-green-600 text-green-600 p-3 rounded-full hover:bg-green-600 hover:text-white transition">
-              <FaInstagram />
-            </a>
-            <a href="#" className="border border-green-600 text-green-600 p-3 rounded-full hover:bg-green-600 hover:text-white transition">
-              <FaTwitter />
-            </a>
-            <a href="#" className="border border-green-600 text-green-600 p-3 rounded-full hover:bg-green-600 hover:text-white transition">
-              <FaLinkedinIn />
-            </a>
-          </div>
+          {/* Social Icons */}
+          
         </div>
 
       </div>
