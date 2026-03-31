@@ -16,7 +16,7 @@ import PMS from "../assets/PMS.png"
 
 // hindi
 import HiPMEGP from '../assets/HiPmegp.png'
-import HiCDP from "../assets/HiCDP.png"
+import HiCDP from "../assets/HICDP.png"
  import HiLIBS from "../assets/HiLIBS.png"
  import HiPM from "../assets/HiPM.png"
  import HiFUND from "../assets/HiFUND.png"
