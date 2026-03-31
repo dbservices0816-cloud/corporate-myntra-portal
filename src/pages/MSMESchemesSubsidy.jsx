@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import PMEGP from '../assets/PMEGP.png'
+import PMEGP from '../assets/Pmegp.png'
 import CDP from "../assets/CDP.png"
 import LIBS from "../assets/LIBS.png"
 import PM from "../assets/PM.png"
