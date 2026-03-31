@@ -52,10 +52,11 @@ export default function Footer() {
             Contact Us
           </h3>
           <p className="text-sm leading-relaxed">
-            UKG-11, 5th Floor <br />
+            UKG-11,5 <br />
             Bhikaji Cama Place <br />
             New Delhi - 110066 <br />
-            India
+           +91 90132 03030
+
           </p>
 
           {/* Social Icons */}
