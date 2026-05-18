@@ -113,7 +113,8 @@ This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
-Developed by **DB**
+Developed by **DB**  
+GitHub: https://github.com/Himanshu-Gupta0007
 
 ---
 
