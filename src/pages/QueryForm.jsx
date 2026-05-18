@@ -14,8 +14,10 @@ export default function QueryForm() {
 
   const [loading, setLoading] = useState(false);
 
-  // ✅ API base URL (ENV based)
-  const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  // API URL
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://corporate-myntra-backend.onrender.com";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,6 +50,22 @@ export default function QueryForm() {
       toast.dismiss(loadingToast);
       toast.success(t("queryForm.success"));
 
+      // ✅ WhatsApp message
+      const message = `New Query:
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Message: ${formData.message}`;
+
+      const whatsappUrl = `https://wa.me/919013203030?text=${encodeURIComponent(
+        message
+      )}`;
+
+      // ✅ 1 sec delay (better UX)
+      setTimeout(() => {
+        window.open(whatsappUrl, "_blank");
+      }, 800);
+
       // ✅ Reset form
       setFormData({
         name: "",
@@ -55,7 +73,6 @@ export default function QueryForm() {
         phone: "",
         message: "",
       });
-
     } catch (error) {
       console.error("Error:", error);
       toast.dismiss(loadingToast);
@@ -68,13 +85,11 @@ export default function QueryForm() {
   return (
     <div className="bg-gray-100 py-12 px-4">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
-
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 text-green-700">
           {t("queryForm.title")}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
           <input
             type="text"
             name="name"
@@ -122,7 +137,6 @@ export default function QueryForm() {
           >
             {loading ? t("queryForm.submitting") : t("queryForm.submit")}
           </button>
-
         </form>
       </div>
     </div>

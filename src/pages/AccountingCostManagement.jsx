@@ -16,10 +16,8 @@ export default function AccountingCostManagement() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ✅ ENV API
-  const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  const API_URL = import.meta.env.VITE_API_URL || "https://corporate-myntra-backend.onrender.com";
 
-  // ✅ API SUBMIT FIXED
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -48,6 +46,23 @@ export default function AccountingCostManagement() {
       toast.success(t("accounting.success"));
 
       setSubmitted(true);
+
+      // WhatsApp redirect
+      const message = `Accounting & Cost Management Query:
+Name: ${form.name}
+Phone: ${form.phone}
+Email: ${form.email}
+Message: ${form.message || "Accounting & Cost Management Query"}`;
+
+      const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+      const whatsappUrl = isMobile
+        ? `https://wa.me/919013203030?text=${encodeURIComponent(message)}`
+        : `https://web.whatsapp.com/send?phone=919013203030&text=${encodeURIComponent(message)}`;
+
+      setTimeout(() => {
+        window.open(whatsappUrl, "_blank");
+      }, 800);
 
       setForm({
         name: "",
@@ -166,14 +181,26 @@ export default function AccountingCostManagement() {
               </h3>
 
               {submitted ? (
-                <p className="text-green-600 font-semibold">
-                  {t("accounting.success")}
-                </p>
+                <div className="text-center py-6">
+                  <div className="text-4xl mb-3">✅</div>
+                  <p className="text-green-600 font-semibold">
+                    {t("accounting.success")}
+                  </p>
+                  <p className="text-slate-500 text-sm mt-1">
+                    We will contact you shortly.
+                  </p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="mt-4 text-green-600 underline text-sm"
+                  >
+                    Close
+                  </button>
+                </div>
               ) : (
 
                 <form onSubmit={handleSubmit} className="space-y-3">
 
-                  {["name","phone","email"].map((field) => (
+                  {["name", "phone", "email"].map((field) => (
                     <input
                       key={field}
                       type={field === "email" ? "email" : "text"}
@@ -192,14 +219,13 @@ export default function AccountingCostManagement() {
 
                   <textarea
                     name="message"
-                    placeholder={t("enter your message")} // ✅ FIX
+                    placeholder="Enter your message"
                     value={form.message}
                     onChange={(e) =>
                       setForm({ ...form, message: e.target.value })
                     }
                     className="w-full border rounded-md px-3 py-2 text-sm"
                     rows="3"
-                    required
                   />
 
                   <button

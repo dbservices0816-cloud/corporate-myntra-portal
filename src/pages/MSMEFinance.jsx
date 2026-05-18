@@ -16,13 +16,12 @@ export default function MSMEFinance() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  const API_URL = import.meta.env.VITE_API_URL || "https://www.corporatemitraportal.com";
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ FIXED: mobile → phone map kiya
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -55,6 +54,24 @@ export default function MSMEFinance() {
       toast.success(t("msmeFinance.success"));
 
       setSubmitted(true);
+
+      // WhatsApp redirect
+      const message = `MSME Finance Query:
+Name: ${formData.name}
+Phone: ${formData.mobile}
+Email: ${formData.email}
+Message: ${formData.message || "MSME Finance Query"}`;
+
+      const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+      const whatsappUrl = isMobile
+        ? `https://wa.me/919013203030?text=${encodeURIComponent(message)}`
+        : `https://web.whatsapp.com/send?phone=919013203030&text=${encodeURIComponent(message)}`;
+
+      setTimeout(() => {
+        window.open(whatsappUrl, "_blank");
+      }, 800);
+
       setFormData({ name: "", mobile: "", email: "", message: "" });
 
     } catch (error) {
@@ -89,7 +106,7 @@ export default function MSMEFinance() {
               </h2>
 
               <div className="grid sm:grid-cols-2 gap-6">
-                {["workingLoan","termLoan","machineryLoan","govtLoan"].map((item) => (
+                {["workingLoan", "termLoan", "machineryLoan", "govtLoan"].map((item) => (
                   <div key={item} className="bg-green-50 p-5 rounded-xl">
                     <h3 className="font-semibold text-green-700 mb-2">
                       ✔ {t(`msmeFinance.${item}`)}
@@ -108,7 +125,7 @@ export default function MSMEFinance() {
                 {t("msmeFinance.benefitsTitle")}
               </h2>
               <ul className="list-disc pl-6 space-y-2">
-                {[1,2,3,4,5].map(i => (
+                {[1, 2, 3, 4, 5].map(i => (
                   <li key={i}>{t(`msmeFinance.b${i}`)}</li>
                 ))}
               </ul>
@@ -120,7 +137,7 @@ export default function MSMEFinance() {
                 {t("msmeFinance.docsTitle")}
               </h2>
               <ul className="list-disc pl-6 space-y-2">
-                {[1,2,3,4,5].map(i => (
+                {[1, 2, 3, 4, 5].map(i => (
                   <li key={i}>{t(`msmeFinance.d${i}`)}</li>
                 ))}
               </ul>
@@ -141,9 +158,10 @@ export default function MSMEFinance() {
               </p>
 
               {submitted ? (
-                <div className="text-center py-4">
+                <div className="text-center py-6">
+                  <div className="text-4xl mb-3">✅</div>
                   <p className="text-green-600 font-semibold text-lg">
-                    ✅ {t("msmeFinance.success")}
+                    {t("msmeFinance.success")}
                   </p>
                   <p className="text-slate-500 text-sm mt-2">
                     We will contact you shortly.

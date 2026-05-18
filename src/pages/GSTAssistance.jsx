@@ -37,47 +37,59 @@ export default function GSTAssistance() {
   };
 
   const handleSubmit = async (e, type) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    const dataToSend = type === "popup" ? popupForm : sidebarForm;
-    const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  const dataToSend = type === "popup" ? popupForm : sidebarForm;
 
+  // ✅ FIX: remove trailing slash
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://corporate-myntra-backend.onrender.com";
+
+  try {
+    const res = await fetch(`${API_URL}/api/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: dataToSend.name,
+        email: dataToSend.email || "noemail@gmail.com",
+        phone: dataToSend.mobile,
+        message: dataToSend.message || "GST Assistance Query",
+      }),
+    });
+
+    // ✅ DEBUG SAFE PARSE
+    const text = await res.text();
+
+    let data;
     try {
-      const res = await fetch(`${API_URL}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: dataToSend.name,
-          email: dataToSend.email || "noemail@gmail.com",
-          phone: dataToSend.mobile,
-          message: dataToSend.message || "GST Assistance Query",
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert("Query submitted successfully!");
-        if (type === "popup") {
-          setPopupForm({ name: "", mobile: "", business: "", message: "" });
-          setShowPopup(false);
-        } else {
-          setSidebarForm({ name: "", mobile: "", email: "", message: "" });
-        }
-      } else {
-        alert(data?.message || "Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submit error:", error);
-      alert("Network error. Please check your connection.");
-    } finally {
-      setLoading(false);
+      data = JSON.parse(text);
+    } catch {
+      console.error("Non-JSON response:", text);
+      throw new Error("Server did not return JSON");
     }
-  };
 
+    if (res.ok) {
+      alert("Query submitted successfully!");
+      if (type === "popup") {
+        setPopupForm({ name: "", mobile: "", business: "", message: "" });
+        setShowPopup(false);
+      } else {
+        setSidebarForm({ name: "", mobile: "", email: "", message: "" });
+      }
+    } else {
+      alert(data?.message || "Something went wrong.");
+    }
+  } catch (error) {
+    console.error("Submit error:", error);
+    alert("Server error. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <>
       {/* ================= POPUP ================= */}

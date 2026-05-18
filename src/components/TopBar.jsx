@@ -1,22 +1,21 @@
 import { useTranslation } from "react-i18next";
 import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTwitter } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export default function TopBar() {
+
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  // const socialLinks = [
-  //   { icon: <FaFacebookF />, href: "#" },
-  //   { icon: <FaInstagram />, href: "#" },
-  //   { icon: <FaTwitter />, href: "#" },
-  //   { icon: <FaLinkedinIn />, href: "#" },
-  // ];
+  
 
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-[#5DD3B6] text-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
 
         {/* Left — Social Icons (Desktop only) */}
-       
+        
+   
 
         {/* Center — Phone Text */}
         {/* Mobile */}

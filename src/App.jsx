@@ -1,7 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import TopBar from "./components/TopBar";
 import Header from "./components/Header";
-//import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Home from "./pages/Home";
 import CompanyNameAvailability from "./pages/CompanyNameAvailability";
@@ -40,86 +39,67 @@ import ICScheme from "./pages/ICScheme";
 import KGVYScheme from "./pages/KGVYScheme";
 import MSMEChampions from "./pages/MSMEChampions";
 import CompanyCompliance from "./pages/CompanyCompliance";
-
-
+import Dashboard from "./admin/Dashboard";
+import Login from "./admin/auth/Login";
+import ProtectedRoute from "./admin/auth/ProtectedRoute";
+import Expert from "./Experts/Expert";
 
 export default function App() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  // ✅ Admin routes — user wala layout bilkul nahi dikhega
+  if (isAdmin) {
+    return (
+      <>
+        <Toaster position="top-right" />
+        <ScrollToTop />
+        <Routes>
+          {/* Login page — koi bhi dekh sakta hai */}
+          <Route path="/admin/login" element={<Login />} />
+
+          {/* Dashboard — sirf logged in admin */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </>
+    );
+  }
+
+  // ✅ Normal user layout
   return (
     <div className="bg-slate-100 min-h-screen font-sans flex flex-col">
       <Toaster position="top-right" />
       <ScrollToTop />
-
-      {/* TopBar — fixed sabse upar */}
       <TopBar />
 
-      {/* pt-12 = TopBar ki height, Header + baaki content yahan scroll hoga */}
       <div className="pt-10 md:pt-11 flex flex-col flex-1">
-
-        {/* Header — normal flow mein, scroll ke saath upar jayega */}
         <Header />
 
-        {/* Main Layout */}
         <div className="flex flex-col lg:flex-row p-4 md:p-6 gap-6 flex-1">
           <Sidebar />
 
-          {/* Right Side Content */}
           <div className="flex-1 bg-white p-6 rounded-lg shadow">
             <Routes>
               <Route path="/" element={<Home />} />
-
-              <Route
-                path="/new-company-registration"
-                element={<NewCompanyRegistration />}
-              />
-
-              <Route
-                path="/company-name-availability"
-                element={<CompanyNameAvailability />}
-              />
-
-              <Route
-                path="/gst-assistance"
-                element={<GSTAssistance />}
-              />
-
-              <Route
-                path="/msme-registrations"
-                element={<MSMERegistration />}
-              />
-
-              <Route
-                path="/annual-filings"
-                element={<AnnualFilings />}
-              />
-
-              {/* ✅ Query Form Route */}
-              <Route
-                path="/query-form"
-                element={<QueryForm />}
-              />
-
-              <Route
-                path="/gem-portal-Assistance"
-                element={<GEMPortalAssistance />}
-              />
-
-              <Route
-                path="/treds-assistance"
-                element={<TReDSAssistance />}
-              />
-
-              <Route
-                path="/msme-finance"
-                element={<MSMEFinance />}
-              />
-              <Route
-                path="/accounting-cost-management"
-                element={<AccountingCostManagement />}
-              />
-              <Route
-                path="/gst-compliances"
-                element={<GSTCompliances />}
-              />
+               <Route path="/talk-to-an-expert" element={<Expert />} />
+              <Route path="/new-company-registration" element={<NewCompanyRegistration />} />
+              <Route path="/company-name-availability" element={<CompanyNameAvailability />} />
+              <Route path="/gst-assistance" element={<GSTAssistance />} />
+              <Route path="/msme-registrations" element={<MSMERegistration />} />
+              <Route path="/annual-filings" element={<AnnualFilings />} />
+              <Route path="/query-form" element={<QueryForm />} />
+              <Route path="/gem-portal-Assistance" element={<GEMPortalAssistance />} />
+              <Route path="/treds-assistance" element={<TReDSAssistance />} />
+              <Route path="/msme-finance" element={<MSMEFinance />} />
+              <Route path="/accounting-cost-management" element={<AccountingCostManagement />} />
+              <Route path="/gst-compliances" element={<GSTCompliances />} />
               <Route path="/gst-reconciliation" element={<GSTReconciliation />} />
               <Route path="/income-tax-portal" element={<IncomeTaxPortal />} />
               <Route path="/pan-application" element={<PANApplication />} />
@@ -131,8 +111,8 @@ export default function App() {
               <Route path="/pmegp-scheme" element={<PMEGPScheme />} />
               <Route path="/msme-schemes-subsidy" element={<MSMESchemesSubsidy />} />
               <Route path="/pms-cdp" element={<PMSScheme />} />
-              <Route path="/mse-cdp" element={<MSECDPScheme/>} />
-              <Route path="/libs" element={<ASPIREScheme/>} />
+              <Route path="/mse-cdp" element={<MSECDPScheme />} />
+              <Route path="/libs" element={<ASPIREScheme />} />
               <Route path="/pm" element={<PMVishwakarma />} />
               <Route path="/zed" element={<SRIFund />} />
               <Route path="/udyam-registration" element={<CGTMSE />} />
@@ -140,7 +120,7 @@ export default function App() {
               <Route path="/tool-room" element={<RAMPScheme />} />
               <Route path="/procurement-policy" element={<ICScheme />} />
               <Route path="/incubation-support" element={<KGVYScheme />} />
-              <Route path="/ipr-scheme" element={<MSMEChampions/>} />
+              <Route path="/ipr-scheme" element={<MSMEChampions />} />
               <Route path="/company-compliance" element={<CompanyCompliance />} />
             </Routes>
           </div>

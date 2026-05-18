@@ -23,42 +23,52 @@ export default function GSTCompliances() {
   };
 
   // ✅ FIXED handleSubmit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://corporate-myntra-backend.onrender.com";
 
+  try {
+    const res = await fetch(`${API_URL}/api/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.mobile,
+        message: formData.message || "GST Compliances Query",
+        type: "gst_compliances",
+      }),
+    });
+
+    const text = await res.text();
+
+    let data;
     try {
-      const res = await fetch(`${API_URL}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.mobile,
-          message: formData.message || "GST Compliances Query",
-          type: "gst_compliances"
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setSuccess(true);
-        setFormData({ name: "", mobile: "", email: "", message: "" });
-      } else {
-        alert(data?.message || "Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      console.error("Submit error:", error);
-      alert("Network error. Please check your connection.");
-    } finally {
-      setLoading(false);
+      data = JSON.parse(text);
+    } catch {
+      console.error("Non-JSON:", text);
+      throw new Error("Invalid response");
     }
-  };
+
+    if (res.ok) {
+      setSuccess(true);
+      setFormData({ name: "", mobile: "", email: "", message: "" });
+    } else {
+      alert(data?.message || "Something went wrong");
+    }
+  } catch (error) {
+    console.error("Submit error:", error);
+    alert("Server not reachable. Try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-100">

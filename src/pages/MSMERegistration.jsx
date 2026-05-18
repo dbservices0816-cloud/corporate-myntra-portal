@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function MSMERegistration() {
   const { t } = useTranslation();
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -11,46 +15,71 @@ export default function MSMERegistration() {
     message: ""
   });
 
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  // Auto popup after 6 seconds (same as NewCompanyRegistration)
+  useEffect(() => {
+    const timer = setTimeout(() => setShowPopup(true), 6000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (loading) return;
+    setLoading(true);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+    const API_URL = import.meta.env.VITE_API_URL || "https://corporate-myntra-backend.onrender.com";
 
-  try {
-    const res = await fetch(`${API_URL}/api/query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.mobile,
-        message: formData.message,
-      })
-    });
+    try {
+      const res = await fetch(`${API_URL}/api/query`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.mobile,
+          message: formData.message || "MSME Registration Query",
+          type: "msme_registration"
+        })
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      setSubmitted(true);
-      setFormData({ name: "", mobile: "", email: "", message: "" });
-    } else {
-      alert(data.message);
+      if (res.ok) {
+        setSubmitted(true);
+
+        // WhatsApp redirect (same logic as NewCompanyRegistration)
+        const message = `MSME Registration Query:
+Name: ${formData.name}
+Phone: ${formData.mobile}
+Email: ${formData.email}
+Message: ${formData.message || "MSME Registration Query"}`;
+
+        const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+        const whatsappUrl = isMobile
+          ? `https://wa.me/919013203030?text=${encodeURIComponent(message)}`
+          : `https://web.whatsapp.com/send?phone=919013203030&text=${encodeURIComponent(message)}`;
+
+        setTimeout(() => {
+          window.open(whatsappUrl, "_blank");
+        }, 800);
+
+        // Reset form
+        setFormData({ name: "", mobile: "", email: "", message: "" });
+      } else {
+        alert(data?.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error. Please check your connection.");
+    } finally {
+      setLoading(false);
     }
-  } catch {
-    alert("Server Error");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
-  // ✅ TABLE DATA
+  // ✅ TABLE DATA (kept same as original)
   const tableRows = [
     {
       label: t("msmeRegistration.prev_invest"),
@@ -92,9 +121,89 @@ export default function MSMERegistration() {
 
   return (
     <div className="min-h-screen bg-slate-100">
+
+      {/* POPUP - Same as NewCompanyRegistration */}
+      {showPopup && (
+        <div
+          onClick={(e) => e.target === e.currentTarget && setShowPopup(false)}
+          className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4"
+        >
+          <div className="bg-white w-full max-w-md rounded-2xl p-6 relative shadow-2xl">
+
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-black font-bold"
+            >
+              ✕
+            </button>
+
+            {!submitted ? (
+              <>
+                <h3 className="text-xl font-bold text-green-700 mb-2">
+                  {t("msmeRegistration.popup_title") || "MSME Registration"}
+                </h3>
+
+                <p className="text-sm text-gray-500 mb-4">
+                  {t("msmeRegistration.popup_desc") || "Get expert assistance for your MSME Registration"}
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  {["name", "mobile", "email"].map((field) => (
+                    <input
+                      key={field}
+                      name={field}
+                      value={formData[field]}
+                      onChange={handleChange}
+                      type={field === "email" ? "email" : field === "mobile" ? "tel" : "text"}
+                      placeholder={t(`msmeRegistration.${field}`)}
+                      className="w-full border rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-green-500"
+                      required
+                    />
+                  ))}
+
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Enter your requirement"
+                    className="w-full border rounded-lg px-4 py-2 text-sm"
+                    rows="3"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition disabled:opacity-60"
+                  >
+                    {loading ? "Sending..." : t("msmeRegistration.submit")}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <div className="text-4xl mb-3">✅</div>
+                <h3 className="text-lg font-semibold text-green-700 mb-2">
+                  {t("msmeRegistration.success") || "Submitted Successfully"}
+                </h3>
+                <p className="text-slate-500 text-sm">
+                  We will contact you shortly.
+                </p>
+                <button
+                  onClick={() => { setSubmitted(false); setShowPopup(false); }}
+                  className="mt-4 text-green-600 underline text-sm"
+                >
+                  Close
+                </button>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-6">
 
-        {/* MAIN */}
+        {/* MAIN CONTENT - Same layout & styling as original */}
         <main className="lg:w-2/3 space-y-6">
 
           {/* HEADER */}
@@ -107,7 +216,7 @@ export default function MSMERegistration() {
             </p>
           </div>
 
-          {/* CONTENT */}
+          {/* CONTENT SECTION */}
           <div className="bg-white p-6 rounded-xl shadow space-y-6">
 
             {/* DESCRIPTION */}
@@ -120,7 +229,7 @@ export default function MSMERegistration() {
               </p>
             </div>
 
-            {/* TABLE */}
+            {/* TABLE - Same as original */}
             <div className="overflow-x-auto">
               <table className="w-full border text-sm">
                 <thead className="bg-slate-100">
@@ -153,7 +262,6 @@ export default function MSMERegistration() {
                       <td className="border p-2">
                         {row.label}
                       </td>
-
                       {row.values.map((val, idx) => (
                         <td key={idx} className="border p-2 text-center">
                           {val}
@@ -165,7 +273,7 @@ export default function MSMERegistration() {
               </table>
             </div>
 
-            {/* BENEFITS */}
+            {/* BENEFITS - Same */}
             <div>
               <h3 className="text-lg font-semibold mb-3">
                 {t("msmeRegistration.benefits_title")}
@@ -185,7 +293,7 @@ export default function MSMERegistration() {
               </div>
             </div>
 
-            {/* DOCUMENTS */}
+            {/* DOCUMENTS - Same */}
             <div>
               <h3 className="text-lg font-semibold mb-3">
                 {t("msmeRegistration.docs_title")}
@@ -198,7 +306,7 @@ export default function MSMERegistration() {
               </ul>
             </div>
 
-            {/* PROCESS */}
+            {/* PROCESS - Same */}
             <div>
               <h3 className="text-lg font-semibold mb-3">
                 {t("msmeRegistration.process_title")}
@@ -214,7 +322,7 @@ export default function MSMERegistration() {
           </div>
         </main>
 
-        {/* SIDEBAR */}
+        {/* SIDEBAR - Now also has "Open Form" button like CTA in NewCompany */}
         <aside className="lg:w-1/3">
           <div className="bg-white p-6 rounded-xl shadow sticky top-6">
 
@@ -226,20 +334,18 @@ export default function MSMERegistration() {
               {t("msmeRegistration.sidebar_desc")}
             </p>
 
-            {submitted ? (
-              <p className="text-green-600 font-semibold">
-                ✅ Submitted Successfully
-              </p>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
+            
 
+            {/* Inline Form (kept as backup) */}
+            {!submitted ? (
+              <form onSubmit={handleSubmit} className="space-y-3">
                 {["name", "mobile", "email"].map((field) => (
                   <input
                     key={field}
                     name={field}
                     value={formData[field]}
                     onChange={handleChange}
-                    type={field === "email" ? "email" : "text"}
+                    type={field === "email" ? "email" : field === "mobile" ? "tel" : "text"}
                     placeholder={t(`msmeRegistration.${field}`)}
                     className="w-full border px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-green-500"
                     required
@@ -253,17 +359,19 @@ export default function MSMERegistration() {
                   placeholder="Enter your requirement"
                   className="w-full border px-3 py-2 rounded-lg text-sm"
                   rows="3"
-                  required
                 />
 
                 <button
                   disabled={loading}
-                  className="w-full bg-green-600 text-white py-2 rounded-lg"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition disabled:opacity-60"
                 >
                   {loading ? "Sending..." : t("msmeRegistration.submit")}
                 </button>
-
               </form>
+            ) : (
+              <p className="text-green-600 font-semibold text-center py-4">
+                ✅ Submitted Successfully
+              </p>
             )}
 
           </div>

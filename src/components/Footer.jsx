@@ -52,12 +52,19 @@ export default function Footer() {
             Contact Us
           </h3>
           <p className="text-sm leading-relaxed">
-            UKG-11,5 <br />
-            Bhikaji Cama Place <br />
-            New Delhi - 110066 <br />
-           +91 90132 03030
+  UKG-11,5 <br />
+  Bhikaji Cama Place somdutt chamber <br />
+  New Delhi - 110066 <br />
 
-          </p>
+  <a
+    href="https://wa.me/919013203030"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-green-600 font-semibold hover:underline"
+  >
+    +91 90132 03030
+  </a>
+</p>
 
           {/* Social Icons */}
           

@@ -25,13 +25,12 @@ export default function NewCompanyRegistration() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ✅ FIXED: e.preventDefault(), VITE_API_URL, mobile → phone
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
     if (loading) return;
     setLoading(true);
 
-    const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+    const API_URL = import.meta.env.VITE_API_URL || "https://corporate-myntra-backend.onrender.com";
 
     try {
       const response = await fetch(`${API_URL}/api/query`, {
@@ -52,7 +51,27 @@ export default function NewCompanyRegistration() {
 
       if (response.ok) {
         setSubmitted(true);
+
+        // WhatsApp redirect
+        const message = `New Company Registration:
+Name: ${formData.name}
+Phone: ${formData.mobile}
+Email: ${formData.email}
+Message: ${formData.message || "New Company Registration Query"}`;
+
+        const isMobile = /iPhone|Android/i.test(navigator.userAgent);
+
+        const whatsappUrl = isMobile
+          ? `https://wa.me/919013203030?text=${encodeURIComponent(message)}`
+          : `https://web.whatsapp.com/send?phone=919013203030&text=${encodeURIComponent(message)}`;
+
+        setTimeout(() => {
+          window.open(whatsappUrl, "_blank");
+        }, 800);
+
+        // Form reset
         setFormData({ name: "", mobile: "", email: "", message: "" });
+
       } else {
         alert(data?.message || "Something went wrong. Please try again.");
       }
@@ -154,7 +173,6 @@ export default function NewCompanyRegistration() {
                   {t("newCompany.popup_desc")}
                 </p>
 
-                {/* ✅ form tag added with onSubmit */}
                 <form onSubmit={handleSubmit} className="space-y-3">
 
                   <input

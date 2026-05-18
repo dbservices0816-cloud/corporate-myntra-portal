@@ -485,12 +485,12 @@ msmeRegistration: {
   title: "MSME / Udyam Registration",
 
   intro:
-    "MSME (Micro, Small & Medium Enterprises) Registration, also known as Udyam Registration, is a government recognition provided to small and medium businesses in India. By registering under MSME, your business becomes eligible for various government benefits, financial support, subsidies, and priority sector advantages.",
+    "MSME (Micro, Small & Medium Enterprises) Registration, also known as Udyam Registration, is a government recognition for small and medium businesses in India. Registering under MSME makes your business eligible for various government benefits, financial support, subsidies, and priority sector advantages.",
 
   def_title: "MSME Classification Update",
 
   def_desc:
-    "When the government introduced MSME registration in 2006, the classification was based on the investment in plant, machinery, or equipment. Later, the classification was updated to include annual investment and turnover criteria. Additionally, the distinction between the manufacturing and services sectors was removed under the MSME definition. The Budget 2025 brought a revision in the MSME classification, effective from 1 April 2025. Below is a comparison of the previous and revised limits.",
+    "When MSME registration was introduced in 2006, classification was based on investment in plant and machinery or equipment. Later, it was updated to include both investment and annual turnover. The distinction between manufacturing and services sectors was also removed. As per Budget 2025, the MSME classification has been revised effective from 1 April 2025. Below is a comparison of previous and revised limits.",
 
   col_criteria: "Criteria",
   col_micro: "Micro",
@@ -498,42 +498,42 @@ msmeRegistration: {
   col_medium: "Medium",
 
   prev_invest: "Previous Investment Limit",
-  prev_invest_micro: "Up to Rs. 1 crore",
-  prev_invest_small: "Up to Rs. 10 crore",
-  prev_invest_medium: "Up to Rs. 50 crore",
+  prev_invest_micro: "Up to ₹1 crore",
+  prev_invest_small: "Up to ₹10 crore",
+  prev_invest_medium: "Up to ₹50 crore",
 
   rev_invest: "Revised Investment Limit",
-  rev_invest_micro: "Up to Rs. 2.5 crore",
-  rev_invest_small: "Up to Rs. 25 crore",
-  rev_invest_medium: "Up to Rs. 125 crore",
+  rev_invest_micro: "Up to ₹2.5 crore",
+  rev_invest_small: "Up to ₹25 crore",
+  rev_invest_medium: "Up to ₹125 crore",
 
   prev_turnover: "Previous Turnover Limit",
-  prev_turnover_micro: "Up to Rs. 5 crore",
-  prev_turnover_small: "Up to Rs. 50 crore",
-  prev_turnover_medium: "Up to Rs. 250 crore",
+  prev_turnover_micro: "Up to ₹5 crore",
+  prev_turnover_small: "Up to ₹50 crore",
+  prev_turnover_medium: "Up to ₹250 crore",
 
   rev_turnover: "Revised Turnover Limit",
-  rev_turnover_micro: "Up to Rs. 10 crore",
-  rev_turnover_small: "Up to Rs. 100 crore",
-  rev_turnover_medium: "Up to Rs. 500 crore",
+  rev_turnover_micro: "Up to ₹10 crore",
+  rev_turnover_small: "Up to ₹100 crore",
+  rev_turnover_medium: "Up to ₹500 crore",
 
   benefits_title: "Benefits of MSME Registration",
 
   b1_title: "Easy Bank Loans",
   b1_desc:
-    "Get access to collateral-free loans under MSME schemes with lower interest rates.",
+    "Access collateral-free loans under MSME schemes at lower interest rates.",
 
-  b2_title: "Government Subsidy",
+  b2_title: "Government Subsidies",
   b2_desc:
-    "Avail subsidies on patent registration and industrial promotion.",
+    "Avail subsidies for patent registration and industrial promotion.",
 
   b3_title: "Tax & Compliance Benefits",
   b3_desc:
-    "Enjoy tax exemptions and protection against delayed payments.",
+    "Enjoy tax benefits and protection against delayed payments.",
 
-  b4_title: "ISO Reimbursement",
+  b4_title: "ISO Cost Reimbursement",
   b4_desc:
-    "Claim reimbursement for ISO certification expenses.",
+    "Get reimbursement for expenses incurred on ISO certification.",
 
   docs_title: "Documents Required",
 
@@ -545,18 +545,18 @@ msmeRegistration: {
 
   process_title: "MSME Registration Process",
 
-  step1: "Provide basic business and Aadhaar details.",
-  step2: "Verification and classification of enterprise.",
-  step3: "Filing of Udyam Registration application.",
-  step4: "Generation of Registration Certificate.",
+  step1: "Provide basic business and Aadhaar details",
+  step2: "Enterprise verification and classification",
+  step3: "Filing of Udyam Registration application",
+  step4: "Generation of MSME Registration Certificate",
 
   sidebar_title: "Apply for MSME Registration",
-  sidebar_desc: "Get your MSME certificate quickly and hassle-free.",
+  sidebar_desc: "Get your MSME certificate quickly and hassle-free",
 
   name: "Full Name",
   mobile: "Mobile Number",
   email: "Email Address",
- submit: "Get Started"
+  submit: "Get Started"
 },
 
 

@@ -23,43 +23,52 @@ export default function PANApplication() {
   };
 
   // ✅ FIXED: localhost → VITE_API_URL, mobile → phone
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const API_URL = import.meta.env.VITE_API_URL || "http://192.168.0.102:3000";
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://corporate-myntra-backend.onrender.com";
 
+  try {
+    const res = await fetch(`${API_URL}/api/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.mobile,
+        message: formData.message || "PAN Application Query",
+        type: "pan_application",
+      }),
+    });
+
+    const text = await res.text();
+
+    let data;
     try {
-      const res = await fetch(`${API_URL}/api/query`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.mobile,
-          message: formData.message || "PAN Application Query",
-          type: "pan_application"
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setSuccess(true);
-        setFormData({ name: "", mobile: "", email: "", message: "" });
-      } else {
-        alert(data?.message || "Something went wrong. Please try again.");
-      }
-
-    } catch (err) {
-      console.error(err);
-      alert("Network error. Please check your connection.");
-    } finally {
-      setLoading(false);
+      data = JSON.parse(text);
+    } catch {
+      console.error("Non-JSON:", text);
+      throw new Error("Invalid response");
     }
-  };
+
+    if (res.ok) {
+      setSuccess(true);
+      setFormData({ name: "", mobile: "", email: "", message: "" });
+    } else {
+      alert(data?.message || "Something went wrong");
+    }
+  } catch (err) {
+    console.error("Submit error:", err);
+    alert("Server not reachable. Try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-100">
