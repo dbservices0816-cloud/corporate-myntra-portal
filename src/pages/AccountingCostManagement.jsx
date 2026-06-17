@@ -190,7 +190,7 @@ Message: ${form.message || "Accounting & Cost Management Query"}`;
                     We will contact you shortly.
                   </p>
                   <button
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => setSubmitted(false)} 
                     className="mt-4 text-green-600 underline text-sm"
                   >
                     Close

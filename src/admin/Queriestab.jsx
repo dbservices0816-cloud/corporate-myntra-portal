@@ -7,33 +7,44 @@ const Queriestab = () => {
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
 
+  
+
   const fetchQueries = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/query");
-      const data = await res.json();
+  try {
+    const API_URL = import.meta.env.VITE_API_URL;
 
-      if (data.success) {
-        const formatted = data.data.map((q) => ({
-          id: q._id,
-          name: q.name,
-          phone: q.phone,
-          service: q.message,
-          status: "Pending",
-          date: new Date(q.createdAt).toLocaleDateString(),
-        }));
+    const res = await fetch(`${API_URL}/api/query`);
 
-        setQueries(formatted);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(`HTTP Error: ${res.status}`);
     }
-  };
+
+    const data = await res.json();
+
+    if (data.success) {
+      const formatted = data.data.map((q) => ({
+        id: q._id,
+        name: q.name,
+        phone: q.phone,
+        service: q.message,
+        status: "Pending",
+        date: new Date(q.createdAt).toLocaleDateString(),
+      }));
+
+      setQueries(formatted);
+    } else {
+      setQueries([]);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    setQueries([]);
+  } finally {
+    setLoading(false);
+  } };
 
   useEffect(() => {
     fetchQueries();
-  }, []);
+  }, []);             
 
   const filtered = queries.filter((q) => {
     const matchSearch =

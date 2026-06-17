@@ -39,32 +39,37 @@
 
     // 🔥 API CALL
     useEffect(() => {
-      const fetchQueries = async () => {
-        try {
-          const res = await fetch("http://localhost:3000/api/query");
-          const data = await res.json();
+  const fetchQueries = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL;
 
-          // ✅ FIXED: handle all API formats
-          if (Array.isArray(data)) {
-            setQueries(data);
-          } else if (Array.isArray(data.data)) {
-            setQueries(data.data);
-          } else if (Array.isArray(data.queries)) {
-            setQueries(data.queries);
-          } else {
-            setQueries([]);
-          }
+      const res = await fetch(`${API_URL}/api/query`);
 
-        } catch (err) {
-          console.error("API Error:", err);
-          setQueries([]);
-        } finally {
-          setLoading(false);
-        }
-      };
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
 
-      fetchQueries();
-    }, []);
+      const data = await res.json();
+
+      if (Array.isArray(data)) {
+        setQueries(data);
+      } else if (Array.isArray(data.data)) {
+        setQueries(data.data);
+      } else if (Array.isArray(data.queries)) {
+        setQueries(data.queries);
+      } else {
+        setQueries([]);
+      }
+    } catch (err) {
+      console.error("API Error:", err);
+      setQueries([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchQueries();
+}, []);
 
     return (
       <div className="space-y-6">
