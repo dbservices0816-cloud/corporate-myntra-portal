@@ -111,11 +111,5 @@ This project is licensed under the MIT License.
 
 ---
 
-## 👨‍💻 Author
-
-Developed by **DB**  
-GitHub: https://github.com/Himanshu-Gupta0007
-
----
 
 ⭐ If you like this project, don't forget to star the repo!
